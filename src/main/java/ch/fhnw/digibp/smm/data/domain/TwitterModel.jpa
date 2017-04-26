@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" pkg="ch.fhnw.digibp.smm.data.domain" v="2.6.3" sm="false" xs="false" id="_14924220128171" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:entity xre="false" compositePrimaryKeyClass="PersonPK" abs="false" class="Person" visibile="true" minimized="false" rootElement="_14924220128171" id="_1492422028301">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" visibile="true" name="personName" id="_14924220537694">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="email" id="_14924220590355">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:one-to-many orp="false" collection-type="java.util.List" connected-entity-id="_1492422105376" connected-attribute-id="_149243318336128" visibile="true" name="author" id="_149243318336229"/>
+            <jpa:one-to-many orp="false" collection-type="java.util.List" connected-entity-id="_1492422105376" connected-attribute-id="_149243319709430" visibile="true" name="reviewer" id="_149243319709431"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14924220283482">
+                <jpa:bv/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:nq e="false" name="Person.findAll">
+            <jpa:query>Select e from Person e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Person.findByPersonName">
+            <jpa:query>Select p from Person p where p.personName=:personName</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Person.findByEmail">
+            <jpa:query>Select p from Person p where p.email=:email</jpa:query>
+        </jpa:nq>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="ProjectPK" abs="false" class="Project" visibile="true" minimized="false" rootElement="_14924220128171" id="_1492422073861">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" visibile="true" name="projectName" id="_14924220810498">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:one-to-many orp="false" collection-type="java.util.List" connected-entity-id="_1492422105376" connected-attribute-id="_149243684329832" visibile="true" name="tweet" id="_149243684329933"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14924220738616">
+                <jpa:bv/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:nq e="false" name="Project.findAll">
+            <jpa:query>Select e from Project e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Project.findByProjectName">
+            <jpa:query>Select p from Project p where p.projectName=:projectName</jpa:query>
+        </jpa:nq>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="TweetPK" abs="false" class="Tweet" visibile="true" minimized="false" rootElement="_14924220128171" id="_1492422105376">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" visibile="true" name="tweetText" id="_149242211412711">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" visibile="true" name="tweetDate" id="_149242213164112">
+                <jpa:an e="true" n="@javax.persistence.Temporal(javax.persistence.TemporalType.DATE)"/>
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="emailContent" id="_149242213803313">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="comment" id="_149242215357114">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="boolean" visibile="true" name="approved" id="_149242215768515">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="review" id="_149254553200617">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="boolean" visibile="true" name="revised" id="_149254559037918">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1492422028301" connected-attribute-id="_149243318336229" visibile="true" name="author" id="_149243318336128"/>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1492422028301" connected-attribute-id="_149243319709431" visibile="true" name="reviewer" id="_149243319709430"/>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1492422073861" connected-attribute-id="_149243684329933" visibile="true" name="project" id="_149243684329832"/>
+            <jpa:one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_1492422105376" visibile="true" name="originalTweet" id="_149254629370319"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14924221053769">
+                <jpa:bv/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:nq e="false" name="tweetText.findAll">
+            <jpa:query>Select e from tweetText e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Tweet.findByTweetText">
+            <jpa:query>Select t from tweetText t where t.tweetText=:tweetText</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Tweet.findByTweetDate">
+            <jpa:query>Select t from tweetText t where t.tweetDate=:tweetDate</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="tweetText.findByEmailContent">
+            <jpa:query>Select t from tweetText t where t.emailContent=:emailContent</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="tweetText.findByComment">
+            <jpa:query>Select t from tweetText t where t.comment=:comment</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="tweetText.findByApproved">
+            <jpa:query>Select t from tweetText t where t.approved=:approved</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="tweetText.findByReviewer">
+            <jpa:query>Select t from tweetText t where t.reviewer=:reviewer</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Tweet.findByReview">
+            <jpa:query>Select t from Tweet t where t.review=:review</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Tweet.findByRevised">
+            <jpa:query>Select t from Tweet t where t.revised=:revised</jpa:query>
+        </jpa:nq>
+    </jpa:entity>
+    <jpa:snp e="true" loc="BEFORE_PACKAGE">/**
+ * This file was generated by the JPA Modeler
+ */</jpa:snp>
+    <jpa:c>
+        <ct>java.util.List</ct>
+        <ct>java.util.Set</ct>
+        <ct>java.util.Map</ct>
+        <ct>java.util.Collection</ct>
+    </jpa:c>
+    <jpa:diagram>
+        <plane elementRef="_14924220128171">
+            <shape elementRef="_1492422028301">
+                <Bounds x="171.0" y="229.0" width="137.0" height="168.0"/>
+            </shape>
+            <shape elementRef="_1492422073861">
+                <Bounds x="696.0" y="239.0" width="137.0" height="126.0"/>
+            </shape>
+            <shape elementRef="_1492422105376">
+                <Bounds x="454.0" y="187.0" width="131.0" height="315.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>
