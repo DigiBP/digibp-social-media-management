@@ -18,6 +18,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+#server:
+#  port: 8081
+
 #  h2:
 #    console:
 #      enabled: true

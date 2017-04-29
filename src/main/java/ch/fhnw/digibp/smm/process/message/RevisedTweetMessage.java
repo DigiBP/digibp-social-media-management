@@ -1,4 +1,4 @@
-package ch.fhnw.digibp.message;
+package ch.fhnw.digibp.smm.process.message;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

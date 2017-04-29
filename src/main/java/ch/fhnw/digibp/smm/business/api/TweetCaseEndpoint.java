@@ -2,6 +2,7 @@ package ch.fhnw.digibp.smm.business.api;
 
 import ch.fhnw.digibp.smm.business.dto.TweetCase;
 import ch.fhnw.digibp.smm.business.service.TweetCaseService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +16,11 @@ import javax.ws.rs.core.MediaType;
  */
 @Component
 @Path("/api/smm/v1/tweetcase")
+@Api
 public class TweetCaseEndpoint {
     @Autowired
     private TweetCaseService tweetCaseService;
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

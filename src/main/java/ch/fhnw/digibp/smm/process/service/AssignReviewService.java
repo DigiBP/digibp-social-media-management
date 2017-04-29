@@ -1,4 +1,4 @@
-package ch.fhnw.digibp.service;
+package ch.fhnw.digibp.smm.process.service;
 
 import ch.fhnw.digibp.smm.business.service.TweetCaseService;
 import org.camunda.bpm.engine.delegate.DelegateTask;

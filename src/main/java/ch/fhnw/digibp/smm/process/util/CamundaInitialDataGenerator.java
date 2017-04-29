@@ -8,7 +8,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ch.fhnw.digibp.util;
+package ch.fhnw.digibp.smm.process.util;
 
 import org.camunda.bpm.engine.*;
 import org.camunda.bpm.engine.authorization.Authorization;

@@ -1,4 +1,4 @@
-package ch.fhnw.digibp.service;
+package ch.fhnw.digibp.smm.process.service;
 
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;

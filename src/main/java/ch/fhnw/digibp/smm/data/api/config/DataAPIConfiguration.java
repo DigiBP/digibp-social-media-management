@@ -1,4 +1,4 @@
-package ch.fhnw.digibp.smm.data.api;
+package ch.fhnw.digibp.smm.data.api.config;
 
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;

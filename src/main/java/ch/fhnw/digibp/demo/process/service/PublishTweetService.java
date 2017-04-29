@@ -1,4 +1,4 @@
-package ch.fhnw.digibp.demo;
+package ch.fhnw.digibp.demo.process.service;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

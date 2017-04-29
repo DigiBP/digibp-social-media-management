@@ -1,4 +1,4 @@
-package ch.fhnw.digibp.util;
+package ch.fhnw.digibp.config;
 
 /**
  * Created by andreas.martin on 16.04.2017.
@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Configuration;
 import javax.ws.rs.ApplicationPath;
 
 /*
-* RestAPIConfig fixes a BUG in CamundaJerseyResourceConfig
+* JerseyResourceConfig fixes a BUG in CamundaJerseyResourceConfig
 */
 @Configuration //This fixes a BUG in "camunda-bpm-spring-boot-starter-rest" when deploying as WAR on Tomcat
 @ApplicationPath("/rest")
-public class RestAPIConfig extends ResourceConfig implements InitializingBean {
+public class JerseyResourceConfig extends ResourceConfig implements InitializingBean {
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(RestAPIConfig.class);
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(JerseyResourceConfig.class);
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -29,8 +29,5 @@ public class RestAPIConfig extends ResourceConfig implements InitializingBean {
         this.registerClasses(CamundaRestResources.getConfigurationClasses());
         this.register(JacksonFeature.class);
         log.info("Finished configuring camunda rest api.");
-        log.info("Configuring DEMO API.");
-        this.packages("ch.fhnw.digibp.smm.business.api"); //Some demo API
-        log.info("Finished configuring DEMO API.");
     }
 }
