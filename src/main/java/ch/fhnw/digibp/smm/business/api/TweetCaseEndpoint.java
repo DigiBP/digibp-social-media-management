@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -26,5 +27,12 @@ public class TweetCaseEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public void openTweetCase(TweetCase tweetCase) {
         tweetCaseService.saveTweetCase(tweetCase.getTweetText(), tweetCase.getTweetDate(), tweetCase.getContent(), tweetCase.getPersonName(), tweetCase.getEmail(), tweetCase.getProjectName());
+    }
+
+    @Path("/assign")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void openTweetCase(@FormParam("reviewerName") String reviewerName, @FormParam("tweetId") Long tweetId) {
+        tweetCaseService.assignReviewer(reviewerName, tweetId);
     }
 }
