@@ -1,0 +1,8 @@
+{
+  "name": "digibpsocialmediamanagement",
+  "description": "DigiBP Showcase: Social Media Management",
+  "repository": "https://github.com/DigiBP/digibp-social-media-management",
+  "addons": ["heroku-postgresql:hobby-dev"],
+  "logo": "https://camunda.com/img/camunda/icon.png",
+  "keywords": ["camunda", "FHNW"]
+}

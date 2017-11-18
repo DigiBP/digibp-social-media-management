@@ -25,4 +25,8 @@ public class TweetRejectionService implements JavaDelegate {
                 + "Review: " + review + "\n"
                 + "Sorry, please try with better content the next time :-)\n");
     }
+
+    public void executeMethod(DelegateExecution delegateExecution) throws Exception {
+        this.execute(delegateExecution);
+    }
 }

@@ -2,7 +2,7 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.7.2">
   <bpmn:process id="TwitterDemoProcess" name="TwitterDemoProcess" isExecutable="true">
     <bpmn:sequenceFlow id="SequenceFlow_0tudf3u" sourceRef="StartEvent_TDP_TweetWritten" targetRef="Task_ReviewTweet" />
-    <bpmn:userTask id="Task_ReviewTweet" name="Review Tweet" camunda:candidateGroups="social-media-manager">
+    <bpmn:userTask id="Task_ReviewTweet" name="Review Tweet" camunda:assignee="demo" camunda:candidateGroups="social-media-manager">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="tweet" label="Tweet" type="string" />
@@ -45,7 +45,7 @@
       <bpmn:incoming>SequenceFlow_0k49tzt</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_16pbw9p</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_SendRejectionNotification" name="Send rejection notification" camunda:delegateExpression="#{tweetRejectionService}">
+    <bpmn:serviceTask id="Task_SendRejectionNotification" name="Send rejection notification" camunda:expression="#{tweetRejectionService.executeMethod(execution)}">
       <bpmn:incoming>SequenceFlow_0ptntv9</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1lxez08</bpmn:outgoing>
     </bpmn:serviceTask>

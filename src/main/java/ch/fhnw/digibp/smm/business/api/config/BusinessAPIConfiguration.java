@@ -5,6 +5,7 @@ import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.ws.rs.ApplicationPath;
@@ -15,9 +16,10 @@ import javax.ws.rs.ApplicationPath;
 @Configuration
 public class BusinessAPIConfiguration {
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(JerseyResourceConfig.class);
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(BusinessAPIConfiguration.class);
     private ResourceConfig resourceConfig;
 
+    @Autowired
     public BusinessAPIConfiguration(ResourceConfig resourceConfig)
     {
         this.resourceConfig = resourceConfig;

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.7.2">
+  <bpmn:message id="Message_0svbe5p" name="Message_TDP_TweetWrittenAPI" />
+  <bpmn:collaboration id="Collaboration_0qvw4bs">
+    <bpmn:participant id="Participant_1jwc470" name="Social Media Management (SMM)" processRef="TwitterDemoProcessAPI" />
+    <bpmn:participant id="Participant_12nmk62" name="Automation Service" />
+    <bpmn:participant id="Participant_12m7y7h" name="Project Worker" />
+    <bpmn:participant id="Participant_1szx111" name="Twitter API" />
+    <bpmn:messageFlow id="MessageFlow_1a92n7g" sourceRef="Task_PublishOnTwitter" targetRef="Participant_12nmk62" />
+    <bpmn:messageFlow id="MessageFlow_1yi12vy" sourceRef="Task_SendRejectionNotification" targetRef="Participant_12nmk62" />
+    <bpmn:messageFlow id="MessageFlow_12crxlq" sourceRef="Participant_12nmk62" targetRef="Participant_12m7y7h" />
+    <bpmn:messageFlow id="MessageFlow_1lllmzn" sourceRef="Participant_12nmk62" targetRef="Participant_1szx111" />
+  </bpmn:collaboration>
+  <bpmn:process id="TwitterDemoProcessAPI" name="TwitterDemoProcessAPI" isExecutable="true">
+    <bpmn:userTask id="Task_ReviewTweet" name="Review Tweet" camunda:assignee="demo" camunda:candidateGroups="social-media-manager">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="tweet" label="Tweet" type="string" />
+          <camunda:formField id="email" label="Email" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="approved" label="Approved?" type="boolean" />
+          <camunda:formField id="review" label="Review comment" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0tudf3u</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_16ajsq7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_Approved" name="Approved?">
+      <bpmn:incoming>SequenceFlow_16ajsq7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ptntv9</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0k49tzt</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_Join" name="Join">
+      <bpmn:incoming>SequenceFlow_16pbw9p</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1lxez08</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1804vak</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndEvent_TweetHandled" name="Tweet handled">
+      <bpmn:incoming>SequenceFlow_1804vak</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="StartEvent_TDP_TweetWritten" name="Tweet written">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="tweet" label="Tweet" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="email" label="Email" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_0tudf3u</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_0svbe5p" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0tudf3u" sourceRef="StartEvent_TDP_TweetWritten" targetRef="Task_ReviewTweet" />
+    <bpmn:sequenceFlow id="SequenceFlow_16ajsq7" sourceRef="Task_ReviewTweet" targetRef="ExclusiveGateway_Approved" />
+    <bpmn:sequenceFlow id="SequenceFlow_0ptntv9" name="No" sourceRef="ExclusiveGateway_Approved" targetRef="Task_SendRejectionNotification">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{!approved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0k49tzt" name="Yes" sourceRef="ExclusiveGateway_Approved" targetRef="Task_PublishOnTwitter">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{approved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_16pbw9p" sourceRef="Task_PublishOnTwitter" targetRef="ExclusiveGateway_Join" />
+    <bpmn:sequenceFlow id="SequenceFlow_1lxez08" sourceRef="Task_SendRejectionNotification" targetRef="ExclusiveGateway_Join" />
+    <bpmn:sequenceFlow id="SequenceFlow_1804vak" sourceRef="ExclusiveGateway_Join" targetRef="EndEvent_TweetHandled" />
+    <bpmn:serviceTask id="Task_SendRejectionNotification" name="Send rejection notification">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">https://hooks.zapier.com/hooks/catch/2050261/mwh0sx/</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="JavaScript"><![CDATA[var to = execution.getVariable("email");
+var subject = "Tweet rejected";
+var body = execution.getVariable("review");
+var fromName = "FHNW DigiBP";
+var replyTo = "fhnw.digibp@gmail.com";
+
+var out = {
+  "to": to,
+  "subject": subject,
+  "body": body,
+  "fromName": fromName,
+  "replyTo": replyTo
+};
+
+JSON.stringify(out);]]></camunda:script>
+            </camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0ptntv9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1lxez08</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_PublishOnTwitter" name="Publish on Twitter">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">https://hooks.zapier.com/hooks/catch/2050261/mw61cw/</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="JavaScript"><![CDATA[var data = execution.getVariable("tweet");
+
+var out = {
+    "tweet": data
+};
+
+JSON.stringify(out);]]></camunda:script>
+            </camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0k49tzt</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_16pbw9p</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0qvw4bs">
+      <bpmndi:BPMNShape id="Participant_1jwc470_di" bpmnElement="Participant_1jwc470">
+        <dc:Bounds x="123" y="-2" width="785" height="241" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0bo6fxa_di" bpmnElement="Task_ReviewTweet">
+        <dc:Bounds x="278" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0gphe4q_di" bpmnElement="ExclusiveGateway_Approved" isMarkerVisible="true">
+        <dc:Bounds x="445" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="492" y="94" width="53" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0oj6yzp_di" bpmnElement="ExclusiveGateway_Join" isMarkerVisible="true">
+        <dc:Bounds x="725" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="767" y="138" width="20" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1qtffh5_di" bpmnElement="EndEvent_TweetHandled">
+        <dc:Bounds x="834" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="817" y="142" width="71" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0rj7b7z_di" bpmnElement="Task_PublishOnTwitter">
+        <dc:Bounds x="508" y="139" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1yzb6md_di" bpmnElement="Task_SendRejectionNotification">
+        <dc:Bounds x="605" y="24" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0n2s3cb_di" bpmnElement="StartEvent_TDP_TweetWritten">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="138" width="65" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0tudf3u_di" bpmnElement="SequenceFlow_0tudf3u">
+        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="278" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="199" y="99" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_16ajsq7_di" bpmnElement="SequenceFlow_16ajsq7">
+        <di:waypoint xsi:type="dc:Point" x="378" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="445" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="367" y="99" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ptntv9_di" bpmnElement="SequenceFlow_0ptntv9">
+        <di:waypoint xsi:type="dc:Point" x="470" y="95" />
+        <di:waypoint xsi:type="dc:Point" x="470" y="64" />
+        <di:waypoint xsi:type="dc:Point" x="605" y="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="445.42056074766356" y="67.3" width="14" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0k49tzt_di" bpmnElement="SequenceFlow_0k49tzt">
+        <di:waypoint xsi:type="dc:Point" x="470" y="145" />
+        <di:waypoint xsi:type="dc:Point" x="470" y="179" />
+        <di:waypoint xsi:type="dc:Point" x="508" y="179" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="445.0000237523661" y="145.50015944856264" width="18" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_16pbw9p_di" bpmnElement="SequenceFlow_16pbw9p">
+        <di:waypoint xsi:type="dc:Point" x="608" y="179" />
+        <di:waypoint xsi:type="dc:Point" x="750" y="179" />
+        <di:waypoint xsi:type="dc:Point" x="750" y="145" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="634" y="158" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1lxez08_di" bpmnElement="SequenceFlow_1lxez08">
+        <di:waypoint xsi:type="dc:Point" x="705" y="64" />
+        <di:waypoint xsi:type="dc:Point" x="750" y="64" />
+        <di:waypoint xsi:type="dc:Point" x="750" y="95" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="682.5" y="43" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1804vak_di" bpmnElement="SequenceFlow_1804vak">
+        <di:waypoint xsi:type="dc:Point" x="775" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="834" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="760" y="99" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_12nmk62_di" bpmnElement="Participant_12nmk62">
+        <dc:Bounds x="123" y="256" width="785" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_0y9te3s_di" bpmnElement="Participant_12m7y7h">
+        <dc:Bounds x="123" y="335" width="784" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="MessageFlow_1a92n7g_di" bpmnElement="MessageFlow_1a92n7g">
+        <di:waypoint xsi:type="dc:Point" x="558" y="219" />
+        <di:waypoint xsi:type="dc:Point" x="558" y="256" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="573" y="231.5" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_1yi12vy_di" bpmnElement="MessageFlow_1yi12vy">
+        <di:waypoint xsi:type="dc:Point" x="657" y="105" />
+        <di:waypoint xsi:type="dc:Point" x="657" y="253" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="672" y="173" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_12crxlq_di" bpmnElement="MessageFlow_12crxlq">
+        <di:waypoint xsi:type="dc:Point" x="657" y="316" />
+        <di:waypoint xsi:type="dc:Point" x="657" y="335" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="627" y="320" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_1jj7z92_di" bpmnElement="Participant_1szx111">
+        <dc:Bounds x="123" y="413" width="784" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="MessageFlow_1lllmzn_di" bpmnElement="MessageFlow_1lllmzn">
+        <di:waypoint xsi:type="dc:Point" x="557" y="316" />
+        <di:waypoint xsi:type="dc:Point" x="557" y="413" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="572" y="358.5" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
