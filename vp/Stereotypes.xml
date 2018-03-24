@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Stereotypes version="20090707">
+	<ApplicationStereotypes>
+		<Stereotype abstract="false" baseType="Class" documentation="" id="ZzXCIjqGAqDogAfQ" leaf="false" name="API" root="false"/>
+		<Stereotype abstract="false" baseType="Class" documentation="" id="g5FiIjqGAqDogAlC" leaf="false" name="Resource" root="false"/>
+		<Stereotype abstract="false" baseType="Operation" documentation="" id="ViBKIjqGAqDogAoK" leaf="false" name="GET" root="false"/>
+		<Stereotype abstract="false" baseType="Operation" documentation="" id="QoRKIjqGAqDogAoM" leaf="false" name="PUT" root="false"/>
+		<Stereotype abstract="false" baseType="Operation" documentation="" id="hXRKIjqGAqDogAoO" leaf="false" name="POST" root="false"/>
+		<Stereotype abstract="false" baseType="Operation" documentation="" id="bpxKIjqGAqDogAoQ" leaf="false" name="DELETE" root="false"/>
+		<Stereotype abstract="false" baseType="Class" documentation="" id="pw5VIjqGAqDogAtg" leaf="false" name="Body" root="false"/>
+		<Stereotype abstract="false" baseType="Dependency" documentation="" id="2u7tIjqGAqDogA2Y" leaf="false" name="Path" root="false"/>
+		<Stereotype abstract="false" baseType="Association" documentation="" id="uRbjIjqGAqDogA66" leaf="false" name="Request" root="false"/>
+		<Stereotype abstract="false" baseType="Association" documentation="" id="59njIjqGAqDogA68" leaf="false" name="Response" root="false"/>
+	</ApplicationStereotypes>
+</Stereotypes>
